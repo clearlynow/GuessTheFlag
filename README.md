@@ -8,4 +8,4 @@ GuessTheFlag is an iOS app game where the user is given a country and must choos
 Score +1 for correct answers and -1 for wrong answers.
 
 # Screenshots
-![GuessTheFlag Screenshot](<https://github.com/clearlynow/GuesstheFlag/blob/main/guesstheflag.mov>)
+![GuessTheFlag Screenshot](<https://github.com/clearlynow/GuessTheFlag/blob/main/guesstheflag.mov>)
