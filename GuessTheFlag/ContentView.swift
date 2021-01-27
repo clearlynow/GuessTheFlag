@@ -23,10 +23,17 @@ struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
     @State private var score = 0
+    @State private var animateCorrect = false
+    @State private var animateWrong = false
+    @State private var wrongAnswer = 4
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
     
+    
+    func spin(_ number: Int) -> Bool {
+            return number == correctAnswer
+        }
     
     var body: some View {
         ZStack{
@@ -44,10 +51,25 @@ struct ContentView: View {
             
                 ForEach(0 ..< 3) { number in
                     Button(action: {
+                        if number == correctAnswer {
+                            withAnimation(.default){
+                                animateCorrect = true
+                                }
+                            }
+                        else {
+                            withAnimation(.default){
+                                animateWrong = true
+                                wrongAnswer = number
+                            }
+                        }
                         self.flagTapped(number)
+
                     }) {
-                        FlagImage(country: self.countries[number])
+                        FlagImage(country: countries[number])
                     }
+                    .rotation3DEffect(.degrees( number == correctAnswer && animateCorrect ? 360.0 : 0.0), axis: (x: 0, y: 0, z: 1))
+                    .opacity(number != correctAnswer && animateCorrect ? 0.25 : 1)
+                    .overlay(number == wrongAnswer && animateWrong ? Capsule().fill(Color.red) : nil)
                 }
                 
                 Text("Score: \(score)")
@@ -74,8 +96,11 @@ struct ContentView: View {
     }
     
     func askQuestion() {
+        animateCorrect = false
+        animateWrong = false
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        wrongAnswer = 4
     }
 
 }
